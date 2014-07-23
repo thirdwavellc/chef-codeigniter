@@ -1,0 +1,28 @@
+<VirtualHost *:<%= @params[:server_port] || node['apache']['listen_ports'].first %>>
+  ServerName <%= @params[:server_name] %>
+  <% if @params[:server_aliases] -%>
+  ServerAlias <%= @params[:server_aliases].join " " %>
+  <% end -%>
+  DocumentRoot <%= @params[:docroot] %>
+
+  <Directory <%= @params[:docroot] %>>
+    <IfModule mod_php5.c>
+            php_admin_flag engine on
+            php_admin_value open_basedir "<%= @params[:docroot] %>:/tmp"
+    </IfModule>
+    Options +Includes -ExecCGI
+    DirectoryIndex index.html index.htm default.htm index.php
+    XSendFile on
+    XSendFilePath <%= @params[:docroot] %>
+    #XSendFileAllowAbove on
+
+    #AuthType Basic
+    #AuthName "Authentication Required"
+    #AuthUserFile "/etc/htpasswd/.htpasswd"
+    #Require valid-user
+
+    AllowOverride <%= [@params[:allow_override] || "None" ].flatten.join " " %>
+    Order allow,deny
+    Allow from all
+  </Directory>
+</VirtualHost>
