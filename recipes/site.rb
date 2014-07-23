@@ -10,6 +10,6 @@
 web_app node['codeigniter']['site_name'] do
   server_name node['codeigniter']['hostname']
   server_aliases node['codeigniter']['aliases']
-  docroot "/var/www/cumminsallison.com"
+  docroot "/var/www/#{node['codeigniter']['docroot']}"
   allow_override true
 end
