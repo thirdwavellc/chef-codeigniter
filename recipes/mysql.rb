@@ -18,6 +18,8 @@ end
 package 'mysql-server'
 package 'php5-mysql'
 
+include_recipe 'mysql::server'
+
 execute 'change-mysql-root-password' do
   command "mysqladmin -u root password #{node['mysql']['server_root_password']} && touch /var/lib/mysql/password_updated"
   creates '/var/lib/mysql/password_updated'
