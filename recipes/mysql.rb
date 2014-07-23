@@ -26,6 +26,7 @@ end
 
 execute 'create-database' do
   command "mysqladmin -u root -p#{node['mysql']['server_root_password']} create #{node['codeigniter']['db']['name']}"
+  creates "/var/lib/mysql/#{node['codeigniter']['db']['name']}"
 end
 
 if node['codeigniter']['db']['backup']
