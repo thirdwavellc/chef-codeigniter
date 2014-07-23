@@ -25,7 +25,7 @@ execute 'change-mysql-root-password' do
 end
 
 execute 'create-database' do
-  command "mysqladmin -u root -p#{node['mysql']['server_root_password']} create #{node['codeigniter']['db']['name']
+  command "mysqladmin -u root -p#{node['mysql']['server_root_password']} create #{node['codeigniter']['db']['name']}"
 end
 
 if node['codeigniter']['db']['backup']
