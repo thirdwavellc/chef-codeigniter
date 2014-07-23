@@ -42,7 +42,7 @@ if node['codeigniter']['db']['backup']
   end
 
   execute "import-db" do
-    command "mysql --password=#{node['mysql']['server_root_password']} < #{Chef::Config[:file_cache_path]}/backup.sql"
+    command "mysql --password=#{node['mysql']['server_root_password']} #{node['codeigniter']['db']['name']} < #{Chef::Config[:file_cache_path]}/backup.sql"
     action :run
   end
 end
