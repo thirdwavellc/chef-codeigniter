@@ -18,36 +18,14 @@ end
 package 'mysql-server'
 package 'php5-mysql'
 
-include_recipe 'mysql::server'
-
 execute 'change-mysql-root-password' do
   command "mysqladmin -u root password #{node['mysql']['server_root_password']} && touch /var/lib/mysql/password_updated"
   creates '/var/lib/mysql/password_updated'
   action :run
 end
 
-mysql_connection_info = {
-  :host     => 'localhost',
-  :username => 'root',
-  :password => node['mysql']['server_root_password']
-}
-
-mysql_database_user node['codeigniter']['db']['user'] do
-  connection mysql_connection_info
-  password node['codeigniter']['db']['user_password']
-  action :create
-end
-
-mysql_database node['codeigniter']['db']['name'] do
-  connection mysql_connection_info
-  action :create
-end
-
-mysql_database_user node['codeigniter']['db']['user'] do
-  connection mysql_connection_info
-  database_name node['codeigniter']['db']['name']
-  privileges [:all]
-  action :grant
+execute 'create-database' do
+  command "mysqladmin -u root -p#{node['mysql']['server_root_password']} create #{node['codeigniter']['db']['name']
 end
 
 if node['codeigniter']['db']['backup']
